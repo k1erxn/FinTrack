@@ -1,0 +1,33 @@
+// File: app/src/main/java/com/example/fintrack/data/Transaction.java
+package com.example.fintrack.data;
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "transactions") // table for transactions
+public class Transaction {
+    @PrimaryKey(autoGenerate = true)
+    private int id;           // primary key auto generated
+    private double amount;    // transaction amount
+    private long date;        // timestamp in millis
+    private String category;  // e.g. Food, Salary
+    private String type;      // income or expense
+
+    public Transaction(double amount, long date, String category, String type) {
+        this.amount = amount;   // set amount
+        this.date = date;       // set date
+        this.category = category;
+        this.type = type;
+    }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public double getAmount() { return amount; }
+    public void setAmount(double amount) { this.amount = amount; }
+    public long getDate() { return date; }
+    public void setDate(long date) { this.date = date; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+}
