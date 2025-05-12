@@ -28,22 +28,34 @@
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 
-    <!-- add-transaction screen with action to history -->
     <fragment
         android:id="@+id/addTransactionFragment"
         android:name="com.example.fintrack.ui.history.AddTransactionFragment"
-        android:label="Add Transaction"
+        android:label="@string/title_add_transaction"
         tools:layout="@layout/fragment_add_transaction">
         <action
             android:id="@+id/action_addTransactionFragment_to_historyFragment"
             app:destination="@id/historyFragment" />
     </fragment>
 
-    <!-- history screen -->
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.fintrack.ui.history.HistoryFragment"
-        android:label="History"
-        tools:layout="@layout/fragment_history" />
+        android:label="@string/title_history"
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_historyFragment_to_editTransactionFragment"
+            app:destination="@id/editTransactionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editTransactionFragment"
+        android:name="com.example.fintrack.ui.history.EditTransactionFragment"
+        android:label="@string/title_edit_transaction"
+        tools:layout="@layout/fragment_edit_transaction">
+        <argument
+            android:name="transactionId"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

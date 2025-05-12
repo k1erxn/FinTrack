@@ -1,13 +1,12 @@
 package com.example.fintrack;
-
 import android.os.Bundle;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.fintrack.databinding.ActivityMainBinding;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import com.example.fintrack.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -15,36 +14,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // inflate the activity main xml via view binding
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // find the navhostfragment by its id
-        NavHostFragment navHostFragment = (NavHostFragment)
-                getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
+        setSupportActionBar(binding.toolbar);
 
-        // get the navcontroller from it
-        NavController navController = navHostFragment.getNavController();
-
-        // configure top level destinations for the actionbar
+        BottomNavigationView navView = binding.navView;
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home,
+                R.id.navigation_history,
                 R.id.navigation_dashboard,
                 R.id.navigation_notifications
         ).build();
 
-        // hook up the actionbar with the navcontroller
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavController navController = Navigation.findNavController(
+                this,
+                R.id.nav_host_fragment_activity_main
+        );
 
-        // hook up the bottomnavigationview with the navcontroller
-        BottomNavigationView navView = binding.navView;
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // avoid memory leaks
-        binding = null;
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(
+                this,
+                R.id.nav_host_fragment_activity_main
+        );
+        return navController.navigateUp() || super.onSupportNavigateUp();
     }
 }

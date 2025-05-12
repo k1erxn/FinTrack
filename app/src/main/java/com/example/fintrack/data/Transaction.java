@@ -1,4 +1,3 @@
-// File: app/src/main/java/com/example/fintrack/data/Transaction.java
 package com.example.fintrack.data;
 
 import androidx.room.Entity;
@@ -10,8 +9,8 @@ public class Transaction {
     private int id;           // primary key auto generated
     private double amount;    // transaction amount
     private long date;        // timestamp in millis
-    private String category;  // e.g. Food, Salary
-    private String type;      // income or expense
+    private String category;
+    private String type;
 
     public Transaction(double amount, long date, String category, String type) {
         this.amount = amount;   // set amount

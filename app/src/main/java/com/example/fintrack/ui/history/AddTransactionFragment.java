@@ -65,7 +65,9 @@ public class AddTransactionFragment extends Fragment {
 
             double amount = Double.parseDouble(amtText);
             String category = (String) binding.spCategory.getSelectedItem();
-            Transaction tx = new Transaction(amount, selectedDate, category, "expense");
+            // treat salary as income
+            String type = category.equalsIgnoreCase("salary") ? "income" : "expense";
+            Transaction tx = new Transaction(amount, selectedDate, category, type);
             viewModel.insert(tx);
 
             NavHostFragment.findNavController(this)

@@ -1,4 +1,3 @@
-// File: app/src/main/java/com/example/fintrack/data/AppDatabase.java
 package com.example.fintrack.data;
 
 import android.content.Context;

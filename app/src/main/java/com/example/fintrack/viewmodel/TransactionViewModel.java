@@ -10,13 +10,13 @@ import com.example.fintrack.data.TransactionRepository;
 import java.util.List;
 
 public class TransactionViewModel extends AndroidViewModel {
-    private final TransactionRepository repo;
-    private final LiveData<List<Transaction>> allTransactions;
+    private final TransactionRepository repo;         // init repo
+    private final LiveData<List<Transaction>> allTransactions;  // live list
 
     public TransactionViewModel(@NonNull Application app) {
         super(app);
-        repo = new TransactionRepository(app);               // init repo
-        allTransactions = repo.getAllTransactions();         // live data
+        repo = new TransactionRepository(app)  ;             // init repo
+        allTransactions = repo.getAllTransactions()  ;       // live data
     }
 
     public LiveData<List<Transaction>> getAllTransactions() {
@@ -24,14 +24,18 @@ public class TransactionViewModel extends AndroidViewModel {
     }
 
     public void insert(Transaction tx) {
-        repo.insert(tx);
+        repo.insert(tx);                             // insert tx
     }
 
     public void update(Transaction tx) {
-        repo.update(tx);
+        repo.update(tx);                                  // update tx
     }
 
     public void delete(Transaction tx) {
-        repo.delete(tx);
+        repo.delete(tx);                                // delete tx
+    }
+
+    public LiveData<Transaction> getTransactionById(int id) {
+        return repo.getTransactionById(id);                 // fetch by id
     }
 }

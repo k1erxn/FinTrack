@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="pie_red">#f44336</color>
+    <color name="pie_blue">#2196f3</color>
+    <color name="pie_green">#4caf50</color>
+    <color name="pie_yellow">#ffeb3b</color>
+    <color name="pie_purple">#9c27b0</color>
+    <color name="outline">#CCCCCC</color>
+
 </resources>
