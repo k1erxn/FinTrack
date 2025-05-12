@@ -13,23 +13,27 @@ public class TransactionRepository {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public TransactionRepository(Application app) {
-        dao = AppDatabase.getInstance(app).transactionDao();  // get DAO
-        allTransactions = dao.getAllTransactions();           // live data list
+        dao = AppDatabase.getInstance(app).transactionDao(); // get dao
+        allTransactions = dao.getAllTransactions(); // live list
     }
 
     public LiveData<List<Transaction>> getAllTransactions() {
         return allTransactions;
     }
 
+    public LiveData<Transaction> getTransactionById(int id) {
+        return dao.getTransactionById(id);
+    }
+
     public void insert(Transaction tx) {
-        executor.execute(() -> dao.insert(tx));  // off UI thread
+        executor.execute(() -> dao.insert(tx)); // insert off ui thread
     }
 
     public void update(Transaction tx) {
-        executor.execute(() -> dao.update(tx));
+        executor.execute(() -> dao.update(tx)); // update off ui thread
     }
 
     public void delete(Transaction tx) {
-        executor.execute(() -> dao.delete(tx));
+        executor.execute(() -> dao.delete(tx)); // delete off ui thread
     }
 }

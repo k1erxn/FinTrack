@@ -35,12 +35,27 @@
         tools:layout="@layout/fragment_add_transaction">
         <action
             android:id="@+id/action_addTransactionFragment_to_historyFragment"
-            app:destination="@id/historyFragment" />
+            app:destination="@id/navigation_history" />
     </fragment>
 
     <fragment
-        android:id="@+id/historyFragment"
+        android:id="@+id/navigation_history"
         android:name="com.example.fintrack.ui.history.HistoryFragment"
         android:label="History"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_historyFragment_to_editTransactionFragment"
+            app:destination="@id/editTransactionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editTransactionFragment"
+        android:name="com.example.fintrack.ui.history.EditTransactionFragment"
+        android:label="Edit Transaction"
+        tools:layout="@layout/fragment_edit_transaction">
+        <argument
+            android:name="transactionId"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>
