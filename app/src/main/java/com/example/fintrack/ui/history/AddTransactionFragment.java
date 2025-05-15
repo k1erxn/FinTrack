@@ -1,4 +1,3 @@
-// File: app/src/main/java/com/example/fintrack/ui/history/AddTransactionFragment.java
 package com.example.fintrack.ui.history;
 
 import android.os.Bundle;
@@ -65,14 +64,15 @@ public class AddTransactionFragment extends Fragment {
 
             double amount = Double.parseDouble(amtText);
             String category = (String) binding.spCategory.getSelectedItem();
-            // treat salary as income
             String type = category.equalsIgnoreCase("salary") ? "income" : "expense";
             Transaction tx = new Transaction(amount, selectedDate, category, type);
             viewModel.insert(tx);
 
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_addTransactionFragment_to_historyFragment);
+            NavHostFragment
+                    .findNavController(this)
+                    .popBackStack();  // <-- this replaces onBackPressed()
         });
+
 
         return binding.getRoot();
     }
