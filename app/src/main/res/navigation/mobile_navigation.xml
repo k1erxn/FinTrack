@@ -46,7 +46,18 @@
         <action
             android:id="@+id/action_historyFragment_to_editTransactionFragment"
             app:destination="@id/editTransactionFragment" />
+
+        <action
+            android:id="@+id/action_navigation_history_to_statisticsFragment"
+            app:destination="@id/statisticsFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="com.example.fintrack.ui.history.StatisticsFragment"
+        android:label="Statistics"
+        tools:layout="@layout/fragment_statistics"/>
+
 
     <fragment
         android:id="@+id/editTransactionFragment"
