@@ -9,4 +9,6 @@
     <string name="title_history">History</string>
     <string name="title_add_transaction">Add Transaction</string>
     <string name="title_edit_transaction">Edit Transaction</string>
+    <string name="view_statistics">View statistics</string>
+
 </resources>

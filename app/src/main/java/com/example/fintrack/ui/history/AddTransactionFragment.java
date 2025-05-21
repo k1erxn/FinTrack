@@ -9,9 +9,7 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.fintrack.R;
 import com.example.fintrack.data.Transaction;
 import com.example.fintrack.databinding.FragmentAddTransactionBinding;
 import com.example.fintrack.viewmodel.TransactionViewModel;
@@ -29,9 +27,10 @@ public class AddTransactionFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentAddTransactionBinding.inflate(inflater, container, false);
-        viewModel = new ViewModelProvider(this).get(TransactionViewModel.class);
+        viewModel = new ViewModelProvider(this)
+                .get(TransactionViewModel.class);
 
-        // set up category spinner
+        // category spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -53,7 +52,7 @@ public class AddTransactionFragment extends Fragment {
             binding.btnPickDate.setText(datePicker.getHeaderText());
         });
 
-        // save and navigate to history
+        // save transaction
         binding.btnSave.setOnClickListener(v -> {
             String amtText = binding.etAmount.getText().toString().trim();
             if (amtText.isEmpty() || Double.parseDouble(amtText) <= 0) {
@@ -62,17 +61,27 @@ public class AddTransactionFragment extends Fragment {
             }
             binding.tilAmount.setError(null);
 
+            String desc = binding.etDescription
+                    .getText()
+                    .toString()
+                    .trim();
+
             double amount = Double.parseDouble(amtText);
             String category = (String) binding.spCategory.getSelectedItem();
-            String type = category.equalsIgnoreCase("salary") ? "income" : "expense";
-            Transaction tx = new Transaction(amount, selectedDate, category, type);
+            String type = category.equalsIgnoreCase("salary")
+                    ? "income"
+                    : "expense";
+
+            Transaction tx = new Transaction(
+                    amount,
+                    selectedDate,
+                    category,
+                    type,
+                    desc
+            );
             viewModel.insert(tx);
-
-            NavHostFragment
-                    .findNavController(this)
-                    .popBackStack();  // <-- this replaces onBackPressed()
+            requireActivity().onBackPressed();
         });
-
 
         return binding.getRoot();
     }

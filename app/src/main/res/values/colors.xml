@@ -13,5 +13,9 @@
     <color name="pie_yellow">#ffeb3b</color>
     <color name="pie_purple">#9c27b0</color>
     <color name="outline">#CCCCCC</color>
-
+    <color name="background">#FFFFFF</color>
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#757575</color>
+    <color name="expenseColor">#F44336</color>
+    <color name="incomeColor">#4CAF50</color>
 </resources>

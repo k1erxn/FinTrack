@@ -1,27 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/tvHistoryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All Transactions"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/primaryText"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:padding="8dp"
+        android:background="@drawable/outline_round"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filter by"
+            android:textColor="@color/secondaryText"/>
+
+        <ImageButton
+            android:id="@+id/btnFilterDate"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_calendar"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Filter by date"/>
+
+        <ImageButton
+            android:id="@+id/btnFilterType"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/ic_dollar"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Filter by type"/>
+
+        <TextView
+            android:id="@+id/tvDownloadWith"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Download as"
+            android:textColor="@color/secondaryText"
+            android:layout_marginStart="18dp"/>
+
+        <ImageButton
+            android:id="@+id/btnExportCsv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/ic_file_download"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Download CSV"/>
+
+        <ImageButton
+            android:id="@+id/btnExportPdf"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_picture_as_pdf"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Download PDF"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/tvTodayHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Today"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/primaryText"/>
+
+        <ImageButton
+            android:id="@+id/btnStats"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_stats"
+            android:contentDescription="@string/view_statistics"
+            android:background="@drawable/circle_purple"
+            android:tint="@android:color/white"/>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTransactions"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/btnStats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Stats"
-        android:layout_margin="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+</LinearLayout>
