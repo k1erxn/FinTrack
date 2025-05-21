@@ -4,9 +4,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fintrack.R;
@@ -28,6 +30,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     private OnItemClickListener listener;
     private OnEditClickListener editListener;
+    private final List<Transaction> items = new ArrayList<>();
 
     public void setOnItemClickListener(OnItemClickListener l) {
         listener = l;
@@ -37,16 +40,13 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         editListener = l;
     }
 
-    private final List<Transaction> items = new ArrayList<>();
-
     public void setTransactions(List<Transaction> list) {
         items.clear();
-        items.addAll(list);
+        if (list != null) items.addAll(list);
         notifyDataSetChanged();
     }
 
-    @NonNull
-    @Override
+    @NonNull @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_transaction, parent, false);
@@ -54,19 +54,54 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        Transaction t = items.get(position);
-        holder.amount.setText(String.format(Locale.getDefault(), "%.2f", t.getAmount()));
-        holder.category.setText(t.getCategory());
-        String date = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-                .format(t.getDate());
-        holder.date.setText(date);
+    public void onBindViewHolder(@NonNull Holder h, int pos) {
+        Transaction t = items.get(pos);
 
-        holder.itemView.setOnClickListener(v -> {
+        // icon by category
+        int iconRes;
+        switch (t.getCategory().toLowerCase(Locale.ROOT)) {
+            case "food":
+                iconRes = R.drawable.ic_food;
+                break;
+            case "rent":
+                iconRes = R.drawable.ic_home;
+                break;
+            case "salary":
+                iconRes = R.drawable.ic_salary;
+                break;
+            default:
+                iconRes = R.drawable.ic_other;
+                break;
+        }
+        h.ivIcon.setImageResource(iconRes);
+
+        // date text
+        String dateText = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+                .format(t.getDate());
+        h.tvDate.setText(dateText);
+
+        // category label
+        h.tvCategory.setText(t.getCategory());
+
+        // amount with sign and color
+        boolean isIncome = "income".equalsIgnoreCase(t.getType());
+        String sign = isIncome ? "+" : "-";
+        String amt = String.format(Locale.getDefault(), "%.2f", Math.abs(t.getAmount()));
+        h.tvAmount.setText(sign + "€" + amt);
+        int colorRes = isIncome
+                ? R.color.incomeColor
+                : R.color.expenseColor;
+        h.tvAmount.setTextColor(
+                ContextCompat.getColor(h.itemView.getContext(), colorRes)
+        );
+
+        // row click
+        h.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onItemClick(t);
         });
 
-        holder.btnEdit.setOnClickListener(v -> {
+        // edit button click
+        h.btnEdit.setOnClickListener(v -> {
             if (editListener != null) editListener.onEditClick(t);
         });
     }
@@ -76,20 +111,22 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         return items.size();
     }
 
-    public Transaction getTransactionAt(int position) {
-        return items.get(position);
+    public Transaction getTransactionAt(int pos) {
+        return items.get(pos);
     }
 
     static class Holder extends RecyclerView.ViewHolder {
-        TextView amount, category, date;
+        ImageView ivIcon;
+        TextView tvAmount, tvCategory, tvDate;
         ImageButton btnEdit;
 
-        Holder(View itemView) {
-            super(itemView);
-            amount   = itemView.findViewById(R.id.tvAmount);
-            category = itemView.findViewById(R.id.tvCategory);
-            date     = itemView.findViewById(R.id.tvDate);
-            btnEdit  = itemView.findViewById(R.id.btnEdit);
+        Holder(View v) {
+            super(v);
+            ivIcon   = v.findViewById(R.id.ivIcon);
+            tvAmount = v.findViewById(R.id.tvAmount);
+            tvCategory = v.findViewById(R.id.tvCategory);
+            tvDate   = v.findViewById(R.id.tvDate);
+            btnEdit  = v.findViewById(R.id.btnEdit);
         }
     }
 }

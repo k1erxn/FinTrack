@@ -1,3 +1,4 @@
+// File: app/src/main/java/com/example/fintrack/ui/history/HistoryFragment.java
 package com.example.fintrack.ui.history;
 
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,23 +55,35 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_history, container, false);
 
-        Button btnStats = root.findViewById(R.id.btnStats);
+        // stats button
+        ImageButton btnStats = root.findViewById(R.id.btnStats);
         btnStats.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_navigation_history_to_statisticsFragment)
         );
 
+        // export CSV button
+        ImageButton btnExportCsv = root.findViewById(R.id.btnExportCsv);
+        btnExportCsv.setOnClickListener(v -> exportCsv());
 
+        // export PDF button
+        ImageButton btnExportPdf = root.findViewById(R.id.btnExportPdf);
+        btnExportPdf.setOnClickListener(v -> exportPdf());
+
+        // transactions list setup
         RecyclerView rv = root.findViewById(R.id.rvTransactions);
         rv.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new TransactionAdapter();
         rv.setAdapter(adapter);
 
-        viewModel = new ViewModelProvider(this).get(TransactionViewModel.class);
+        // viewmodel and data observe
+        viewModel = new ViewModelProvider(this)
+                .get(TransactionViewModel.class);
         viewModel.getAllTransactions().observe(getViewLifecycleOwner(), list ->
                 adapter.setTransactions(list)
         );
 
+        // edit on click
         adapter.setOnEditClickListener(tx -> {
             Bundle args = new Bundle();
             args.putInt("transactionId", tx.getId());
@@ -77,6 +91,7 @@ public class HistoryFragment extends Fragment {
                     .navigate(R.id.action_historyFragment_to_editTransactionFragment, args);
         });
 
+        // swipe to delete
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                 0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT
@@ -98,47 +113,48 @@ public class HistoryFragment extends Fragment {
         return root;
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu,
-                                    @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.history_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_export_csv) {
-            exportCsv();
-            return true;
-        } else if (id == R.id.action_export_pdf) {
-            exportPdf();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.action_export_csv) {
+//            exportCsv();
+//            return true;
+//        } else if (id == R.id.action_export_pdf) {
+//            exportPdf();
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void exportCsv() {
         List<Transaction> list = viewModel.getAllTransactions().getValue();
         if (list == null || list.isEmpty()) {
-            Toast.makeText(requireContext(), "no transactions to export", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "no transactions to export",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
         try {
-            File csvFile = new File(requireContext().getCacheDir(), "transactions.csv");
+            File csvFile = new File(requireContext().getCacheDir(),
+                    "transactions.csv");
             FileWriter writer = new FileWriter(csvFile);
-            writer.append("ID,Amount,Date,Category,Type\n");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            writer.append("ID,Amount,Date,Category,Type,Description\n");
+            SimpleDateFormat sdf = new SimpleDateFormat(
+                    "yyyy-MM-dd", Locale.getDefault());
             for (Transaction t : list) {
                 writer.append(String.valueOf(t.getId()))
                         .append(",")
-                        .append(String.format(Locale.getDefault(),"%.2f", t.getAmount()))
+                        .append(String.format(Locale.getDefault(),
+                                "%.2f", t.getAmount()))
                         .append(",")
                         .append(sdf.format(new Date(t.getDate())))
                         .append(",")
                         .append(t.getCategory())
                         .append(",")
                         .append(t.getType())
+                        .append(",")
+                        .append(t.getDescription() != null
+                                ? t.getDescription()
+                                : "")
                         .append("\n");
             }
             writer.close();
@@ -151,43 +167,54 @@ public class HistoryFragment extends Fragment {
             share.putExtra(Intent.EXTRA_STREAM, uri);
             share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(share, "share csv"));
+
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(requireContext(), "csv export failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(),
+                    "csv export failed", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void exportPdf() {
         List<Transaction> list = viewModel.getAllTransactions().getValue();
         if (list == null || list.isEmpty()) {
-            Toast.makeText(requireContext(), "no transactions to export", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "no transactions to export",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
         PdfDocument doc = new PdfDocument();
-        PdfDocument.PageInfo pi = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
+        PdfDocument.PageInfo pi = new PdfDocument.PageInfo.Builder(
+                595, 842, 1).create();
         PdfDocument.Page page = doc.startPage(pi);
         Canvas c = page.getCanvas();
         Paint p = new Paint();
         p.setTextSize(12);
 
         int y = 25;
-        c.drawText("ID  Amount  Date       Category  Type", 10, y, p);
+        c.drawText("ID  Amount  Date       Category  Type  Desc",
+                10, y, p);
         y += p.getTextSize() + 5;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat(
+                "yyyy-MM-dd", Locale.getDefault());
         for (Transaction t : list) {
             String line = t.getId() + "  "
-                    + String.format(Locale.getDefault(),"%.2f", t.getAmount()) + "  "
+                    + String.format(Locale.getDefault(),
+                    "%.2f", t.getAmount()) + "  "
                     + sdf.format(new Date(t.getDate())) + "  "
                     + t.getCategory() + "  "
-                    + t.getType();
+                    + t.getType() + "  "
+                    + (t.getDescription() != null
+                    ? t.getDescription()
+                    : "");
             c.drawText(line, 10, y, p);
             y += p.getTextSize() + 5;
         }
         doc.finishPage(page);
 
         try {
-            File pdfFile = new File(requireContext().getCacheDir(), "transactions.pdf");
+            File pdfFile = new File(requireContext().getCacheDir(),
+                    "transactions.pdf");
             doc.writeTo(new FileOutputStream(pdfFile));
             doc.close();
 
@@ -199,9 +226,11 @@ public class HistoryFragment extends Fragment {
             share.putExtra(Intent.EXTRA_STREAM, uri);
             share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(share, "share pdf"));
+
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(requireContext(), "pdf export failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(),
+                    "pdf export failed", Toast.LENGTH_SHORT).show();
         }
     }
 }
