@@ -1,4 +1,3 @@
-// File: app/src/main/java/com/example/fintrack/ui/history/HistoryFragment.java
 package com.example.fintrack.ui.history;
 
 import android.content.Intent;
@@ -29,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fintrack.R;
 import com.example.fintrack.data.Transaction;
 import com.example.fintrack.viewmodel.TransactionViewModel;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,6 +43,8 @@ import java.util.Locale;
 public class HistoryFragment extends Fragment {
     private TransactionViewModel viewModel;
     private TransactionAdapter adapter;
+    private boolean dateAscending = false;
+    private boolean amountAscending = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +59,7 @@ public class HistoryFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_history, container, false);
 
         // stats button
-        ImageButton btnStats = root.findViewById(R.id.btnStats);
+        MaterialCardView btnStats = root.findViewById(R.id.cardStats);
         btnStats.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_navigation_history_to_statisticsFragment)
@@ -69,6 +72,19 @@ public class HistoryFragment extends Fragment {
         // export PDF button
         ImageButton btnExportPdf = root.findViewById(R.id.btnExportPdf);
         btnExportPdf.setOnClickListener(v -> exportPdf());
+
+        ImageButton btnFilterDate = root.findViewById(R.id.btnFilterDate);
+
+        btnFilterDate.setOnClickListener(v -> {
+            dateAscending = !dateAscending;
+            viewModel.sortByDate(dateAscending);
+        });
+
+        ImageButton btnFilterType = root.findViewById(R.id.btnFilterType);
+        btnFilterType.setOnClickListener(v -> {
+            amountAscending = !amountAscending;
+            viewModel.sortByAmount(amountAscending);
+        });
 
         // transactions list setup
         RecyclerView rv = root.findViewById(R.id.rvTransactions);
@@ -106,25 +122,17 @@ public class HistoryFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder vh, int dir) {
                 int pos = vh.getAdapterPosition();
                 Transaction tx = adapter.getTransactionAt(pos);
-                viewModel.delete(tx);
+                if (tx != null) {
+                    viewModel.delete(tx);
+                } else {
+                    // it was a date‐header, so just reset that row
+                    adapter.notifyItemChanged(pos);
+                }
             }
         }).attachToRecyclerView(rv);
 
         return root;
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.action_export_csv) {
-//            exportCsv();
-//            return true;
-//        } else if (id == R.id.action_export_pdf) {
-//            exportPdf();
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     private void exportCsv() {
         List<Transaction> list = viewModel.getAllTransactions().getValue();

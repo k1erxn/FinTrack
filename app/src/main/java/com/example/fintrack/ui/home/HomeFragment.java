@@ -18,6 +18,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.fintrack.data.Transaction;
 import com.example.fintrack.databinding.FragmentHomeBinding;
+import com.example.fintrack.util.CurrencyManager;
 import com.example.fintrack.viewmodel.TransactionViewModel;
 import com.example.fintrack.util.SimpleItemSelectedListener;
 import com.github.mikephil.charting.charts.PieChart;
@@ -82,8 +83,6 @@ public class HomeFragment extends Fragment {
                 updateDashboard(viewModel.getAllTransactions().getValue());
             }
         });
-
-
         return root;
     }
 
@@ -112,9 +111,17 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        // update cards
-        tvIncome.setText(String.format(Locale.getDefault(), "Income\n€%.2f", inc));
-        tvExpenses.setText(String.format(Locale.getDefault(), "Expenses\n€%.2f", exp));
+        // update cards for changing currency
+        CurrencyManager cm = CurrencyManager.get(requireContext());
+
+        String incDisplay = cm.getCurrencySymbol()
+                + String.format(Locale.getDefault(), "%.2f", inc);
+        tvIncome.setText("Income\n" + incDisplay);
+
+        String expDisplay = cm.getCurrencySymbol()
+                + String.format(Locale.getDefault(), "%.2f", exp);
+        tvExpenses.setText("Expenses\n" + expDisplay);
+
 
         // build pie entries
         List<PieEntry> entries = new ArrayList<>();

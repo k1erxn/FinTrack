@@ -26,29 +26,56 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Filter by"
-            android:textColor="@color/secondaryText"/>
-
-        <ImageButton
-            android:id="@+id/btnFilterDate"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/ic_calendar"
+        <ImageView
+            android:id="@+id/btnFilter"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_filter_out"
+            android:layout_marginStart="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Filter by date"/>
+            android:contentDescription="Filter options"
+            android:tint="?attr/colorOnSurface"
+            android:layout_marginEnd="16dp"/>
 
-        <ImageButton
-            android:id="@+id/btnFilterType"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="12dp"
-            android:src="@drawable/ic_dollar"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Filter by type"/>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="2dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOnSurface"
+            app:cardBackgroundColor="?attr/colorSurface">
+
+            <ImageButton
+                android:id="@+id/btnFilterDate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_calendar"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Filter by date"
+                android:tint="?attr/colorOnSurface"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="5dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOnSurface"
+            app:cardBackgroundColor="?attr/colorSurface">
+
+            <ImageButton
+                android:id="@+id/btnFilterType"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_dollar"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Filter by type"
+                android:tint="?attr/colorOnSurface"/>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/tvDownloadWith"
@@ -56,63 +83,116 @@
             android:layout_height="wrap_content"
             android:text="Download as"
             android:textColor="@color/secondaryText"
-            android:layout_marginStart="18dp"/>
+            android:layout_marginStart="40dp"/>
 
-        <ImageButton
-            android:id="@+id/btnExportCsv"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="12dp"
-            android:src="@drawable/ic_file_download"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Download CSV"/>
-
-        <ImageButton
-            android:id="@+id/btnExportPdf"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/ic_picture_as_pdf"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Download PDF"/>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="16dp">
-
-        <TextView
-            android:id="@+id/tvTodayHeader"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Today"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/primaryText"/>
-
-        <ImageButton
-            android:id="@+id/btnStats"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
-            android:padding="8dp"
-            android:src="@drawable/ic_stats"
-            android:contentDescription="@string/view_statistics"
-            android:background="@drawable/circle_purple"
-            android:tint="@android:color/white"/>
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOnSurface"
+            app:cardBackgroundColor="?attr/colorSurface">
+
+            <ImageButton
+                android:id="@+id/btnExportCsv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_file_download"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Download CSV"
+                android:tint="?attr/colorOnSurface"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOnSurface"
+            app:cardBackgroundColor="?attr/colorSurface">
+
+            <ImageButton
+                android:id="@+id/btnExportPdf"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_picture_as_pdf"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Download PDF"
+                android:tint="?attr/colorOnSurface"/>
+        </com.google.android.material.card.MaterialCardView>
+
+
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvTransactions"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardStats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="0dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="?attr/colorSurface">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                android:layout_marginEnd="12dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_analytics"
+                    android:tint="@android:color/white"
+                    android:contentDescription="Analytics Icon"
+                    android:padding="8dp"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Monthly Statistics"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:layout_weight="1"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#F0F0F0">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTransactions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
