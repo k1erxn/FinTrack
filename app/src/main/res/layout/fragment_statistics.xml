@@ -1,64 +1,264 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground">
 
-    <TextView
-        android:id="@+id/tvStatsTitle"
-        android:layout_width="wrap_content"
+    <!-- Top app bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Monthly Statistics"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
+        app:navigationIcon="@drawable/ic_arrow_left"
+        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
 
     <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageButton
-            android:id="@+id/btnPrev"
-            android:layout_width="wrap_content"
+        <!-- Section header -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_left"
-            android:contentDescription="previous"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?attr/colorPrimary"
+            app:cardElevation="0dp">
 
-        <TextView
-            android:id="@+id/tvPeriodRange"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/tvStatsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:text="Monthly Statistics"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Dark grey container with rounded corners -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="Jan – Jun"
-            android:textAlignment="center"
-            android:textSize="16sp"/>
+            android:layout_marginTop="-8dp"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="-8dp"
+            app:cardCornerRadius="24dp"
+            app:cardBackgroundColor="#C7C7C7"
+            app:cardElevation="0dp"
+            android:padding="16dp">
 
-        <ImageButton
-            android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_right"
-            android:contentDescription="next"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <!-- Period selector -->
+                <!-- Upgraded period selector in its own card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <com.google.android.material.button.MaterialButton
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:id="@+id/btnPrev"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:icon="@drawable/ic_arrow_left"
+                            app:iconGravity="textStart"
+                            android:contentDescription="Previous period" />
+
+                        <TextView
+                            android:id="@+id/tvPeriodRange"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Jan – Jun"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorPrimary" />
+
+                        <com.google.android.material.button.MaterialButton
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:id="@+id/btnNext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:icon="@drawable/ic_arrow_right"
+                            app:iconGravity="textEnd"
+                            android:contentDescription="Next period" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <!-- Chart area: fixed height to avoid stretching -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="350dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_height="370dp"
+                    android:layout_marginTop="16dp"
+                    app:cardBackgroundColor="#EEEEEE"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    android:padding="12dp">
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/barChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="350dp"
+                    android:layout_height="200dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginTop="32dp"
+                    app:cardBackgroundColor="?attr/colorSurface">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="10dp">
+
+
+                        <!-- Header -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="8dp"
+                            app:cardBackgroundColor="?attr/colorPrimary"
+                            app:cardElevation="0dp"
+                            android:layout_marginBottom="2dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:gravity="center"
+                                android:text="Summary"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/white" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Month spinner -->
+                        <Spinner
+                            android:id="@+id/spinnerSummary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/spinner_outline" />
+
+
+
+
+                        <!-- Cash in / out -->
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="Cash in"
+                                android:drawableLeft="@drawable/ic_circle"
+                                android:drawableTint="#4CAF50"
+                                android:drawablePadding="8dp"
+                                android:textColor="?android:attr/textColorPrimary"/>
+
+                            <TextView
+                                android:id="@+id/tvCashIn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="+€0.00"
+                                android:textColor="#4CAF50"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:weightSum="2">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="Cash out"
+                                android:drawableLeft="@drawable/ic_circle"
+                                android:drawableTint="#F44336"
+                                android:drawablePadding="8dp"
+                                android:textColor="?android:attr/textColorPrimary"/>
+
+                            <TextView
+                                android:id="@+id/tvCashOut"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="-€0.00"
+                                android:textColor="#F44336"/>
+                        </LinearLayout>
+
+                        <!-- Average savings -->
+                        <TextView
+                            android:id="@+id/tvAvgSavings"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Average monthly savings –€0.00"
+                        android:layout_marginTop="12dp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <!-- Placeholder for additional summary or controls -->
+                <FrameLayout
+                    android:id="@+id/statsLowerPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/barChart"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_weight="1"/>
-
-    <FrameLayout
-        android:id="@+id/statsLowerPlaceholder"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
