@@ -10,5 +10,5 @@
     <string name="title_add_transaction">Add Transaction</string>
     <string name="title_edit_transaction">Edit Transaction</string>
     <string name="view_statistics">View statistics</string>
-
+    <string name="attached_photo_preview">Attached photo preview</string>
 </resources>

@@ -1,6 +1,10 @@
 package com.example.fintrack.ui.history;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +22,12 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import java.util.Arrays;
 
 public class AddTransactionFragment extends Fragment {
+    private static final int REQ_ATTACH_PHOTO = 9876;
+
     private FragmentAddTransactionBinding binding;
     private TransactionViewModel viewModel;
     private long selectedDate = System.currentTimeMillis();
+    private Uri attachedPhotoUri = null;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,11 +59,18 @@ public class AddTransactionFragment extends Fragment {
             binding.btnPickDate.setText(datePicker.getHeaderText());
         });
 
+        // attach photo
+        binding.btnAttachPhoto.setOnClickListener(v -> {
+            Intent pick = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            pick.setType("image/*");
+            startActivityForResult(pick, REQ_ATTACH_PHOTO);
+        });
+
         // save transaction
         binding.btnSave.setOnClickListener(v -> {
             String amtText = binding.etAmount.getText().toString().trim();
             if (amtText.isEmpty() || Double.parseDouble(amtText) <= 0) {
-                binding.tilAmount.setError("enter valid amount");
+                binding.tilAmount.setError("Enter valid amount");
                 return;
             }
             binding.tilAmount.setError(null);
@@ -79,11 +93,33 @@ public class AddTransactionFragment extends Fragment {
                     type,
                     desc
             );
+
+            // if a photo was attached save its URI string
+            if (attachedPhotoUri != null) {
+                tx.setPhotoUri(attachedPhotoUri.toString());
+            }
+
             viewModel.insert(tx);
             requireActivity().onBackPressed();
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_ATTACH_PHOTO
+                && resultCode == Activity.RESULT_OK
+                && data != null) {
+            Uri uri = data.getData();
+            if (uri != null) {
+                attachedPhotoUri = uri;
+                // show preview of photo
+                binding.ivPhotoPreview.setImageURI(uri);
+                binding.ivPhotoPreview.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override

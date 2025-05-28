@@ -1,6 +1,8 @@
 package com.example.fintrack.ui.history;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.bumptech.glide.Glide;
 import com.example.fintrack.data.Transaction;
 import com.example.fintrack.databinding.FragmentEditTransactionBinding;
 import com.example.fintrack.viewmodel.TransactionViewModel;
@@ -28,6 +31,9 @@ public class EditTransactionFragment extends Fragment {
     private final SimpleDateFormat sdf =
             new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
+    // <— hold onto the loaded transaction so we never dereference a null LiveData value
+    private Transaction currentTx;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
@@ -35,10 +41,9 @@ public class EditTransactionFragment extends Fragment {
         binding = FragmentEditTransactionBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(this).get(TransactionViewModel.class);
 
-        // read transaction id from args
         txId = getArguments().getInt("transactionId");
 
-        // setup category spinner
+        // category spinner
         ArrayAdapter<String> catAdapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -47,7 +52,7 @@ public class EditTransactionFragment extends Fragment {
         catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spCategory.setAdapter(catAdapter);
 
-        // prepare date picker
+        // date picker
         MaterialDatePicker<Long> picker = MaterialDatePicker.Builder
                 .<Long>datePicker()
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
@@ -64,29 +69,49 @@ public class EditTransactionFragment extends Fragment {
         viewModel.getTransactionById(txId)
                 .observe(getViewLifecycleOwner(), tx -> {
                     if (tx == null) return;
+                    currentTx = tx;  // ← store it immediately
+
+                    // populate fields
                     binding.etAmount.setText(String.valueOf(tx.getAmount()));
                     selectedDate = tx.getDate();
                     binding.btnPickDate.setText(sdf.format(selectedDate));
                     binding.etDescription.setText(tx.getDescription());
                     int pos = catAdapter.getPosition(tx.getCategory());
                     if (pos >= 0) binding.spCategory.setSelection(pos);
+
+                    // photo preview
+                    String photoUri = tx.getPhotoUri();
+                    if (!TextUtils.isEmpty(photoUri)) {
+                        binding.ivPhotoPreview.setVisibility(View.VISIBLE);
+                        Glide.with(this)
+                                .load(Uri.parse(photoUri))
+                                .centerCrop()
+                                .into(binding.ivPhotoPreview);
+                    }
                 });
 
         // update button
         binding.btnUpdate.setOnClickListener(v -> {
-            double amt = Double.parseDouble(
-                    binding.etAmount.getText().toString().trim()
-            );
+            String amtText = binding.etAmount.getText().toString().trim();
+            double amt = Double.parseDouble(amtText);
             String cat = (String) binding.spCategory.getSelectedItem();
             String desc = binding.etDescription.getText().toString().trim();
+
+            // build new transaction, preserving ID and photoUri
             Transaction updated = new Transaction(
                     amt,
                     selectedDate,
                     cat,
-                    "expense",
+                    cat.equalsIgnoreCase("salary") ? "income" : "expense",
                     desc
             );
             updated.setId(txId);
+
+            // safely reuse whatever photoUri was loaded (if any)
+            if (currentTx != null && currentTx.getPhotoUri() != null) {
+                updated.setPhotoUri(currentTx.getPhotoUri());
+            }
+
             viewModel.update(updated);
             NavHostFragment.findNavController(this).popBackStack();
         });
