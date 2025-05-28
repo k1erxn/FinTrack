@@ -42,15 +42,15 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Dark grey container with rounded corners -->
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginTop="-8dp"
             android:layout_marginStart="-8dp"
             android:layout_marginEnd="-8dp"
-            app:cardCornerRadius="24dp"
+            app:cardCornerRadius="50dp"
             app:cardBackgroundColor="#C7C7C7"
             app:cardElevation="0dp"
             android:padding="16dp">
@@ -61,9 +61,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
-                <!-- Period selector -->
-                <!-- Upgraded period selector in its own card -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -115,12 +112,10 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-
-                <!-- Chart area: fixed height to avoid stretching -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="350dp"
                     android:layout_marginStart="22dp"
-                    android:layout_height="370dp"
+                    android:layout_height="340dp"
                     android:layout_marginTop="16dp"
                     app:cardBackgroundColor="#EEEEEE"
                     app:cardCornerRadius="12dp"
@@ -141,7 +136,7 @@
                     app:cardElevation="4dp"
                     android:layout_marginStart="22dp"
                     android:layout_marginEnd="22dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="10dp"
                     app:cardBackgroundColor="?attr/colorSurface">
 
                     <LinearLayout
@@ -152,8 +147,6 @@
                         android:paddingRight="10dp"
                         android:paddingTop="10dp">
 
-
-                        <!-- Header -->
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

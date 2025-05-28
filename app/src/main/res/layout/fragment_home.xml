@@ -1,114 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="0dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.home.HomeFragment">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardTopSection"
+    <!-- Scrollable content -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollContent"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
-        app:strokeColor="@color/outline"
-        app:strokeWidth="1dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:orientation="vertical"
-            android:padding="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
-            <Spinner
-                android:id="@+id/spMonth"
+            <!-- 1. Top Overview Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTopSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/spinner_background"
-                android:padding="8dp"
-                android:popupBackground="@android:color/white"/>
+                android:layout_margin="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:strokeColor="@color/outline"
+                app:strokeWidth="1dp">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <!-- Today's date in title -->
+                    <TextView
+                        android:id="@+id/tvOverviewTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="?android:attr/textColorPrimary"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <!-- Current Month bar -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/currentMonthContainer"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="12dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardBackgroundColor="?attr/colorPrimary"
+                        app:cardElevation="0dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvOverviewTitle"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <TextView
+                            android:id="@+id/tvCurrentMonth"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Income & Expenses -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardIncome"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="#E8F5E9"
+                        app:layout_constraintTop_toBottomOf="@id/currentMonthContainer"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/cardExpenses"
+                        android:layout_marginEnd="8dp">
+
+                        <TextView
+                            android:id="@+id/tvIncomeOverView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:drawableStart="@drawable/ic_arrow_up"
+                            android:drawableTint="#388E3C"
+                            android:padding="16dp"
+                            android:text="Income\n€0.00"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="#388E3C" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardExpenses"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="#FFEBEE"
+                        app:layout_constraintTop_toBottomOf="@id/currentMonthContainer"
+                        app:layout_constraintStart_toEndOf="@id/cardIncome"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="8dp">
+
+                        <TextView
+                            android:id="@+id/tvExpensesOverview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:drawableStart="@drawable/ic_arrow_down"
+                            android:drawableTint="#D32F2F"
+                            android:padding="16dp"
+                            android:text="Expenses\n€0.00"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="#D32F2F" />
+                    </com.google.android.material.card.MaterialCardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 2. Mini Pie Chart: This Month -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardCurrentMonthPie"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tvIncome"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="16dp"
-                    android:text="Income\n€0.00"
-                    android:textAppearance="?attr/textAppearanceHeadline6"/>
-
-                <TextView
-                    android:id="@+id/tvExpenses"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:gravity="center"
-                    android:padding="16dp"
-                    android:text="Expenses\n€0.00"
-                    android:textAppearance="?attr/textAppearanceHeadline6"/>
-            </LinearLayout>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardPieSection"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
-        app:strokeColor="@color/outline"
-        app:strokeWidth="1dp"
-        app:layout_constraintTop_toBottomOf="@id/cardTopSection"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvBreakdownTitle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Expense Breakdown"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:textStyle="bold"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/outline"
+                app:strokeWidth="1dp">
 
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/pieChart"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="This Month"
+                        android:textAppearance="?attr/textAppearanceSubtitle1"
+                        android:textStyle="bold"/>
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/miniPieChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="8dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 3. Expense Breakdown Card (original size) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardPieSection"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="8dp"/>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="40dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/outline"
+                app:strokeWidth="1dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Breakdown Title Bar -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/breakdownTitleBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardBackgroundColor="?attr/colorPrimary"
+                        app:cardElevation="0dp">
+
+                        <TextView
+                            android:id="@+id/tvExpensesBreakdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="Expense Breakdown"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Spinner -->
+                    <Spinner
+                        android:id="@+id/spinnerSummary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/spinner_outline"
+                        android:padding="12dp"
+                        android:popupBackground="?android:attr/colorBackgroundFloating" />
+
+                    <!-- Main PieChart -->
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_margin="16dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- 4. Fixed FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/add_transaction"
         app:srcCompat="@drawable/ic_add"
+        app:tint="@android:color/white"
+        app:backgroundTint="@color/purple_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

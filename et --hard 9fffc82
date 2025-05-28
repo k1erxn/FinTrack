@@ -1,0 +1,31 @@
+[33m4dccfaf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmonthly-statistics[m[33m, [m[1;31morigin/feature/settings[m[33m, [m[1;32mfeature/settings[m[33m)[m HEAD@{0}: reset: moving to HEAD~1
+[33m9fffc82[m[33m ([m[1;31morigin/monthly-statistics[m[33m)[m HEAD@{1}: checkout: moving from monthly-statistics to monthly-statistics
+[33m9fffc82[m[33m ([m[1;31morigin/monthly-statistics[m[33m)[m HEAD@{2}: commit: (Monthly Statistics): added summary feature, and styled page
+[33m4dccfaf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmonthly-statistics[m[33m, [m[1;31morigin/feature/settings[m[33m, [m[1;32mfeature/settings[m[33m)[m HEAD@{3}: checkout: moving from feature/settings to monthly-statistics
+[33m4dccfaf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmonthly-statistics[m[33m, [m[1;31morigin/feature/settings[m[33m, [m[1;32mfeature/settings[m[33m)[m HEAD@{4}: commit: Added & styled settings page
+[33m9d3fb87[m[33m ([m[1;31morigin/feature/history-ui[m[33m, [m[1;32mfeature/history-ui[m[33m)[m HEAD@{5}: checkout: moving from feature/history-ui to feature/settings
+[33m9d3fb87[m[33m ([m[1;31morigin/feature/history-ui[m[33m, [m[1;32mfeature/history-ui[m[33m)[m HEAD@{6}: commit: Transaction history UI design revamp
+[33mcfa8901[m[33m ([m[1;31morigin/feature/statistics-screen[m[33m, [m[1;32mfeature/statistics-screen[m[33m)[m HEAD@{7}: checkout: moving from feature/statistics-screen to feature/history-ui
+[33mcfa8901[m[33m ([m[1;31morigin/feature/statistics-screen[m[33m, [m[1;32mfeature/statistics-screen[m[33m)[m HEAD@{8}: commit: feature(statistics-page) monthly statistics page added
+[33m912894f[m[33m ([m[1;31morigin/feature/export-transactions[m[33m, [m[1;32mfeature/export-transactions[m[33m)[m HEAD@{9}: checkout: moving from feature/export-transactions to feature/statistics-screen
+[33m912894f[m[33m ([m[1;31morigin/feature/export-transactions[m[33m, [m[1;32mfeature/export-transactions[m[33m)[m HEAD@{10}: commit: feature(export-transaction), fix(add-transaction)
+[33m6a7ace0[m[33m ([m[1;32mmain[m[33m)[m HEAD@{11}: checkout: moving from main to feature/export-transactions
+[33m6a7ace0[m[33m ([m[1;32mmain[m[33m)[m HEAD@{12}: pull: Fast-forward
+[33mb75648b[m HEAD@{13}: checkout: moving from transactions-statistics to main
+[33md4685c0[m[33m ([m[1;31morigin/transactions-statistics[m[33m, [m[1;32mtransactions-statistics[m[33m)[m HEAD@{14}: commit: feat(transaction, statistics): added the adding and viewing of transactions feature, base skeleton of home screen developed(to be styled further)
+[33mf527290[m[33m ([m[1;31morigin/feature/add-transaction[m[33m)[m HEAD@{15}: Branch: renamed refs/heads/feature/add-transaction to refs/heads/transactions-statistics
+[33mf527290[m[33m ([m[1;31morigin/feature/add-transaction[m[33m)[m HEAD@{17}: commit: feat(ui) Add transaction feature
+[33mb75648b[m HEAD@{18}: checkout: moving from main to feature/add-transaction
+[33mb75648b[m HEAD@{19}: pull origin main: Fast-forward
+[33mffd3e72[m HEAD@{20}: checkout: moving from feature/history-screen to main
+[33m147c328[m[33m ([m[1;31morigin/feature/history-screen[m[33m, [m[1;32mfeature/history-screen[m[33m)[m HEAD@{21}: commit: feat(ui) HistoryFragment, Recyclerview, adapter
+[33mffd3e72[m HEAD@{22}: checkout: moving from main to feature/history-screen
+[33mffd3e72[m HEAD@{23}: checkout: moving from main to main
+[33mffd3e72[m HEAD@{24}: pull origin main: Fast-forward
+[33m926c888[m HEAD@{25}: checkout: moving from feature/room-setup to main
+[33md64f925[m[33m ([m[1;31morigin/feature/room-setup[m[33m, [m[1;32mfeature/room-setup[m[33m)[m HEAD@{26}: commit (amend): feat(data): add Room entity, DAO, database, repository and ViewModel
+[33m63f4eb1[m HEAD@{27}: commit: feat(data): add Room entity, DAO, database, repository and ViewModel
+[33m926c888[m HEAD@{28}: checkout: moving from main to feature/room-setup
+[33m926c888[m HEAD@{29}: Branch: renamed refs/heads/main to refs/heads/main
+[33m926c888[m HEAD@{31}: Branch: renamed refs/heads/master to refs/heads/main
+[33m926c888[m HEAD@{33}: commit (initial): initial commit

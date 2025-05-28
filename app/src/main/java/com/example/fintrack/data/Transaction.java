@@ -12,6 +12,8 @@ public class Transaction {
     private String category;
     private String type;
     private String description;// newly added
+    private String photoUri;
+
 
 
     public Transaction(double amount, long date, String category, String type, String description) {
@@ -68,5 +70,12 @@ public class Transaction {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPhotoUri() {
+        return photoUri;
+    }
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
     }
 }
