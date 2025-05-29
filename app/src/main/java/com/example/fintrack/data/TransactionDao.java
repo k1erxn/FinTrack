@@ -1,4 +1,3 @@
-// File: app/src/main/java/com/example/fintrack/data/TransactionDao.java
 package com.example.fintrack.data;
 
 import androidx.lifecycle.LiveData;

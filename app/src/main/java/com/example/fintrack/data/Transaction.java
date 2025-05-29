@@ -6,19 +6,19 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "transactions") // table for transactions
 public class Transaction {
     @PrimaryKey(autoGenerate = true)
-    private int id;           // primary key auto generated
-    private double amount;    // transaction amount
-    private long date;        // timestamp in millis
+    private int id;
+    private double amount;
+    private long date;
     private String category;
     private String type;
-    private String description;// newly added
+    private String description;
     private String photoUri;
 
 
-
+    //constructor to create transactions
     public Transaction(double amount, long date, String category, String type, String description) {
-        this.amount = amount;   // set amount
-        this.date = date;       // set date
+        this.amount = amount;
+        this.date = date;
         this.category = category;
         this.type = type;
         this.description = description;
@@ -66,7 +66,7 @@ public class Transaction {
 
     public String getDescription() {
         return description;
-    }       // new
+    }
 
     public void setDescription(String description) {
         this.description = description;

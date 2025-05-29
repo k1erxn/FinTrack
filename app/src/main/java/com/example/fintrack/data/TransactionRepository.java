@@ -1,4 +1,3 @@
-// File: app/src/main/java/com/example/fintrack/data/TransactionRepository.java
 package com.example.fintrack.data;
 
 import android.app.Application;
@@ -7,14 +6,16 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+// repository for transaction data
 public class TransactionRepository {
     private final TransactionDao dao;
     private final LiveData<List<Transaction>> allTransactions;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor = Executors.newSingleThreadExecutor(); // background executor for db operations
 
+    // initialize repository and dao
     public TransactionRepository(Application app) {
-        dao = AppDatabase.getInstance(app).transactionDao(); // get dao
-        allTransactions = dao.getAllTransactions(); // live list
+        dao = AppDatabase.getInstance(app).transactionDao(); // get data access object
+        allTransactions = dao.getAllTransactions(); // load transactions live
     }
 
     public LiveData<List<Transaction>> getAllTransactions() {
@@ -26,14 +27,14 @@ public class TransactionRepository {
     }
 
     public void insert(Transaction tx) {
-        executor.execute(() -> dao.insert(tx)); // insert off ui thread
+        executor.execute(() -> dao.insert(tx)); // insert in background
     }
 
     public void update(Transaction tx) {
-        executor.execute(() -> dao.update(tx)); // update off ui thread
+        executor.execute(() -> dao.update(tx)); // update in background
     }
 
     public void delete(Transaction tx) {
-        executor.execute(() -> dao.delete(tx)); // delete off ui thread
+        executor.execute(() -> dao.delete(tx)); // delete in background
     }
 }

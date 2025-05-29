@@ -1,0 +1,15 @@
+[33mc3954fd[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mhome-revamp[m[33m, [m[1;31morigin/home-revamp[m[33m)[m Finished home page layout & styling
+[33m9fffc82[m[33m ([m[1;31morigin/monthly-statistics[m[33m, [m[1;32mmonthly-statistics[m[33m)[m (Monthly Statistics): added summary feature, and styled page
+[33m4dccfaf[m[33m ([m[1;31morigin/feature/settings[m[33m, [m[1;32mfeature/settings[m[33m)[m Added & styled settings page
+[33m9d3fb87[m[33m ([m[1;31morigin/feature/history-ui[m[33m, [m[1;32mfeature/history-ui[m[33m)[m Transaction history UI design revamp
+[33mcfa8901[m[33m ([m[1;31morigin/feature/statistics-screen[m[33m, [m[1;32mfeature/statistics-screen[m[33m)[m feature(statistics-page) monthly statistics page added
+[33m912894f[m[33m ([m[1;31morigin/feature/export-transactions[m[33m, [m[1;32mfeature/export-transactions[m[33m)[m feature(export-transaction), fix(add-transaction)
+[33m6a7ace0[m[33m ([m[1;32mmain[m[33m)[m Merge pull request #4 from k1erxn/transactions-statistics
+[33md4685c0[m[33m ([m[1;31morigin/transactions-statistics[m[33m, [m[1;32mtransactions-statistics[m[33m)[m feat(transaction, statistics): added the adding and viewing of transactions feature, base skeleton of home screen developed(to be styled further)
+[33m3a1edc0[m Merge pull request #3 from k1erxn/feature/add-transaction
+[33mf527290[m[33m ([m[1;31morigin/feature/add-transaction[m[33m)[m feat(ui) Add transaction feature
+[33mb75648b[m Merge pull request #2 from k1erxn/feature/history-screen
+[33m147c328[m[33m ([m[1;31morigin/feature/history-screen[m[33m, [m[1;32mfeature/history-screen[m[33m)[m feat(ui) HistoryFragment, Recyclerview, adapter
+[33mffd3e72[m Merge pull request #1 from k1erxn/feature/room-setup
+[33md64f925[m[33m ([m[1;31morigin/feature/room-setup[m[33m, [m[1;32mfeature/room-setup[m[33m)[m feat(data): add Room entity, DAO, database, repository and ViewModel
+[33m926c888[m initial commit

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+// fragment showing transaction statistics chart
 public class StatisticsFragment extends Fragment {
     private FragmentStatisticsBinding binding;
     private TransactionViewModel viewModel;
@@ -46,20 +47,21 @@ public class StatisticsFragment extends Fragment {
         binding = FragmentStatisticsBinding.inflate(inflater, container, false);
         BarChart chart = binding.barChart;
 
-        setupChartAppearance(chart);
-        setupSummarySpinner();
+        setupChartAppearance(chart); // configure chart look
+        setupSummarySpinner();       // prepare month selector
 
         binding.btnPrev.setOnClickListener(v -> {
             offsetMonths += WINDOW;
-            updateChart(chart);
+            updateChart(chart);      // show previous period
         });
         binding.btnNext.setOnClickListener(v -> {
             if (offsetMonths >= WINDOW) {
                 offsetMonths -= WINDOW;
-                updateChart(chart);
+                updateChart(chart);  // show next period
             }
         });
 
+        // get live data of transactions then draw chart
         viewModel = new ViewModelProvider(this).get(TransactionViewModel.class);
         viewModel.getAllTransactions().observe(getViewLifecycleOwner(), list -> {
             allTx = list;
@@ -72,9 +74,10 @@ public class StatisticsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        binding = null; // avoid memory leak
     }
 
+    // set chart grid axes legend and interaction settings
     private void setupChartAppearance(BarChart chart) {
         chart.getDescription().setEnabled(false);
         chart.setDrawGridBackground(false);
@@ -92,6 +95,7 @@ public class StatisticsFragment extends Fragment {
         x.setAvoidFirstLastClipping(true);
     }
 
+    // calculate sums by month then update bar entries axis labels and range
     private void updateChart(BarChart chart) {
         if (allTx == null) return;
         Calendar cal = Calendar.getInstance();
@@ -99,6 +103,7 @@ public class StatisticsFragment extends Fragment {
         Map<String, Float> incMap = new LinkedHashMap<>();
         Map<String, Float> expMap = new LinkedHashMap<>();
 
+        // initialise maps with month labels for window
         for (int i = WINDOW - 1; i >= 0; i--) {
             cal.setTimeInMillis(System.currentTimeMillis());
             cal.add(Calendar.MONTH, -i - offsetMonths);
@@ -107,6 +112,7 @@ public class StatisticsFragment extends Fragment {
             incMap.put(m, 0f);
             expMap.put(m, 0f);
         }
+        // accumulate income and expense per month
         for (Transaction t : allTx) {
             cal.setTimeInMillis(t.getDate());
             String m = new SimpleDateFormat("MMM", Locale.getDefault()).format(cal.getTime());
@@ -128,28 +134,29 @@ public class StatisticsFragment extends Fragment {
         binding.tvPeriodRange.setText(labels[0] + " – " + labels[WINDOW - 1]);
         binding.btnNext.setEnabled(offsetMonths >= WINDOW);
 
+        // prepare data sets and assign to chart
         BarDataSet dsI = new BarDataSet(inE, ""); dsI.setColor(Color.parseColor("#4CAF50"));
         BarDataSet dsE = new BarDataSet(exE, ""); dsE.setColor(Color.parseColor("#F44336"));
         dsI.setDrawValues(false);
         dsE.setDrawValues(false);
         BarData data = new BarData(dsI, dsE); data.setBarWidth(0.3f);
         chart.setData(data);
-        // find the highest combined value in any month
+
+        // adjust axis range to max value
         float max = 0f;
         for (BarEntry e : inE)   max = Math.max(max, e.getY());
         for (BarEntry e : exE)   max = Math.max(max, e.getY());
-
-// configure left axis to only show one tick at that max
         YAxis left = chart.getAxisLeft();
         left.setAxisMinimum(0f);
         left.setAxisMaximum(max);
-        left.setLabelCount(2, true);  // 0 and max only
+        left.setLabelCount(2, true);
 
         chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
         chart.groupBars(-0.35f, 0.25f, 0.04f);
         chart.invalidate();
     }
 
+    // spinner to show summary stats for selected month
     private void setupSummarySpinner() {
         String[] months = new DateFormatSymbols(Locale.getDefault()).getShortMonths();
         List<String> monthList = new ArrayList<>();
@@ -163,11 +170,10 @@ public class StatisticsFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 String selMonth = monthList.get(pos);
 
-                // 1) Compute totalIn/totalOut for the selected month
+                // compute cash in and out for selected month
                 float totalIn = 0f, totalOut = 0f;
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat fmt = new SimpleDateFormat("MMM", Locale.getDefault());
-
                 for (Transaction t : allTx) {
                     cal.setTimeInMillis(t.getDate());
                     if (selMonth.equals(fmt.format(cal.getTime()))) {
@@ -179,7 +185,7 @@ public class StatisticsFragment extends Fragment {
                 binding.tvCashIn.setText(String.format(Locale.getDefault(), "+€%.2f", totalIn));
                 binding.tvCashOut.setText(String.format(Locale.getDefault(), "-€%.2f", totalOut));
 
-                // 2) Bucket all transactions into each month and compute monthly savings
+                // compute average monthly savings over all months
                 String[] allMonths = new DateFormatSymbols(Locale.getDefault()).getShortMonths();
                 Map<String, Float> monthSavings = new LinkedHashMap<>();
                 for (String m : allMonths) {
@@ -192,12 +198,10 @@ public class StatisticsFragment extends Fragment {
                         float prev = monthSavings.get(m);
                         float amt = (float) t.getAmount();
                         if ("income".equalsIgnoreCase(t.getType())) prev += amt;
-                        else prev -= amt;       // subtract expenses
+                        else prev -= amt;
                         monthSavings.put(m, prev);
                     }
                 }
-
-                // 3) Compute the average over all 12
                 float sumAll = 0f;
                 for (float sav : monthSavings.values()) {
                     sumAll += sav;
@@ -206,7 +210,6 @@ public class StatisticsFragment extends Fragment {
                 binding.tvAvgSavings.setText(String.format(Locale.getDefault(),
                         "Average monthly savings  €%.2f", avgAll));
             }
-
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
     }

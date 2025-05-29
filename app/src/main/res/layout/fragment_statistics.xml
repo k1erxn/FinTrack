@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground">
 
-    <!-- Top app bar -->
+    <!-- top app bar for navigation -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -14,6 +14,7 @@
         app:navigationIcon="@drawable/ic_arrow_left"
         app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
 
+    <!-- main content area below app bar -->
     <LinearLayout
         android:orientation="vertical"
         android:padding="16dp"
@@ -21,7 +22,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Section header -->
+        <!-- section title card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,38 +43,30 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-
+        <!-- chart container card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="-8dp"
-            android:layout_marginStart="-8dp"
-            android:layout_marginEnd="-8dp"
+            android:layout_height="match_parent"
+            android:layout_margin="-8dp"
             app:cardCornerRadius="50dp"
             app:cardBackgroundColor="#C7C7C7"
             app:cardElevation="0dp"
             android:padding="16dp">
-
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!-- period navigation controls -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_marginStart="22dp"
-                    android:layout_marginEnd="22dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_margin="22dp"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="2dp"
                     app:cardBackgroundColor="?attr/colorSurface"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp">
+                    android:padding="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -112,10 +105,11 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- bar chart view -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="350dp"
-                    android:layout_marginStart="22dp"
                     android:layout_height="340dp"
+                    android:layout_marginStart="22dp"
                     android:layout_marginTop="16dp"
                     app:cardBackgroundColor="#EEEEEE"
                     app:cardCornerRadius="12dp"
@@ -127,26 +121,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
-
                 </com.google.android.material.card.MaterialCardView>
+
+                <!-- summary section with spinner and stats -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="350dp"
                     android:layout_height="200dp"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="4dp"
-                    android:layout_marginStart="22dp"
-                    android:layout_marginEnd="22dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_margin="22dp"
                     app:cardBackgroundColor="?attr/colorSurface">
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="10dp">
+                        android:padding="10dp">
 
+                        <!-- summary title -->
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -166,26 +158,20 @@
 
                         </com.google.android.material.card.MaterialCardView>
 
-                        <!-- Month spinner -->
+                        <!-- month selection spinner -->
                         <Spinner
                             android:id="@+id/spinnerSummary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_margin="16dp"
                             android:background="@drawable/spinner_outline" />
 
-
-
-
-                        <!-- Cash in / out -->
+                        <!-- cash in and out text -->
                         <LinearLayout
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:weightSum="2">
+                            android:layout_marginTop="12dp">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -203,14 +189,14 @@
                                 android:layout_height="wrap_content"
                                 android:text="+€0.00"
                                 android:textColor="#4CAF50"/>
+
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:weightSum="2">
+                            android:layout_marginTop="4dp">
 
                             <TextView
                                 android:layout_width="0dp"
@@ -228,20 +214,21 @@
                                 android:layout_height="wrap_content"
                                 android:text="-€0.00"
                                 android:textColor="#F44336"/>
+
                         </LinearLayout>
 
-                        <!-- Average savings -->
+                        <!-- average savings display -->
                         <TextView
                             android:id="@+id/tvAvgSavings"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Average monthly savings –€0.00"
-                        android:layout_marginTop="12dp"/>
+                            android:layout_marginTop="12dp"/>
+
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-
-                <!-- Placeholder for additional summary or controls -->
+                <!-- placeholder for extra content -->
                 <FrameLayout
                     android:id="@+id/statsLowerPlaceholder"
                     android:layout_width="match_parent"

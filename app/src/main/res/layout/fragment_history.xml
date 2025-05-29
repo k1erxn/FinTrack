@@ -8,6 +8,7 @@
     android:padding="16dp"
     android:background="@color/background">
 
+    <!-- title for history screen -->
     <TextView
         android:id="@+id/tvHistoryTitle"
         android:layout_width="wrap_content"
@@ -17,6 +18,7 @@
         android:textStyle="bold"
         android:textColor="@color/primaryText"/>
 
+    <!-- filter sort and export controls -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,6 +39,7 @@
             android:tint="?attr/colorOnSurface"
             android:layout_marginEnd="16dp"/>
 
+        <!-- button to toggle date sorting -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -46,7 +49,6 @@
             app:strokeWidth="1dp"
             app:strokeColor="?attr/colorOnSurface"
             app:cardBackgroundColor="?attr/colorSurface">
-
             <ImageButton
                 android:id="@+id/btnFilterDate"
                 android:layout_width="match_parent"
@@ -57,6 +59,7 @@
                 android:tint="?attr/colorOnSurface"/>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- button to toggle amount sorting -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -66,7 +69,6 @@
             app:strokeWidth="1dp"
             app:strokeColor="?attr/colorOnSurface"
             app:cardBackgroundColor="?attr/colorSurface">
-
             <ImageButton
                 android:id="@+id/btnFilterType"
                 android:layout_width="match_parent"
@@ -77,6 +79,7 @@
                 android:tint="?attr/colorOnSurface"/>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- label for export options -->
         <TextView
             android:id="@+id/tvDownloadWith"
             android:layout_width="wrap_content"
@@ -85,6 +88,7 @@
             android:textColor="@color/secondaryText"
             android:layout_marginStart="40dp"/>
 
+        <!-- button to export csv file -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -94,7 +98,6 @@
             app:strokeWidth="1dp"
             app:strokeColor="?attr/colorOnSurface"
             app:cardBackgroundColor="?attr/colorSurface">
-
             <ImageButton
                 android:id="@+id/btnExportCsv"
                 android:layout_width="match_parent"
@@ -105,6 +108,7 @@
                 android:tint="?attr/colorOnSurface"/>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- button to export pdf file -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -114,7 +118,6 @@
             app:strokeWidth="1dp"
             app:strokeColor="?attr/colorOnSurface"
             app:cardBackgroundColor="?attr/colorSurface">
-
             <ImageButton
                 android:id="@+id/btnExportPdf"
                 android:layout_width="match_parent"
@@ -125,9 +128,9 @@
                 android:tint="?attr/colorOnSurface"/>
         </com.google.android.material.card.MaterialCardView>
 
-
     </LinearLayout>
 
+    <!-- card to navigate to statistics screen -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardStats"
         android:layout_width="match_parent"
@@ -140,7 +143,6 @@
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         app:cardBackgroundColor="?attr/colorSurface">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="64dp"
@@ -148,14 +150,12 @@
             android:gravity="center_vertical|center_horizontal"
             android:paddingStart="12dp"
             android:paddingEnd="12dp">
-
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 app:cardCornerRadius="20dp"
                 app:cardBackgroundColor="?attr/colorPrimary"
                 android:layout_marginEnd="12dp">
-
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -164,7 +164,6 @@
                     android:contentDescription="Analytics Icon"
                     android:padding="8dp"/>
             </com.google.android.material.card.MaterialCardView>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -175,10 +174,7 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-
-
-
-
+    <!-- list of transactions with date headers -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -187,12 +183,11 @@
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:cardBackgroundColor="#F0F0F0">
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTransactions"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
     </com.google.android.material.card.MaterialCardView>
+
 </LinearLayout>

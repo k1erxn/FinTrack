@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- transaction item card container -->
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,6 +16,7 @@
         android:padding="12dp"
         android:gravity="center_vertical">
 
+        <!-- icon representing category -->
         <ImageView
             android:id="@+id/ivIcon"
             android:layout_width="32dp"
@@ -30,6 +31,7 @@
             android:layout_weight="1"
             android:layout_marginStart="12dp">
 
+            <!-- transaction category label -->
             <TextView
                 android:id="@+id/tvCategory"
                 android:layout_width="wrap_content"
@@ -38,13 +40,14 @@
                 android:textSize="16sp"
                 android:textColor="@color/primaryText"/>
 
+            <!-- transaction date display -->
             <TextView
                 android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"/>
 
-
+            <!-- transaction amount styled bold -->
             <TextView
                 android:id="@+id/tvAmount"
                 android:layout_width="wrap_content"
@@ -56,6 +59,7 @@
 
         </LinearLayout>
 
+        <!-- button to edit this transaction -->
         <ImageButton
             android:id="@+id/btnEdit"
             android:layout_width="wrap_content"

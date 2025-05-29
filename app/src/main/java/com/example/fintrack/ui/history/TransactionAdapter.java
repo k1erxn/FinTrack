@@ -22,7 +22,9 @@ import java.util.Locale;
 
 public class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    // view type for date header
     private static final int TYPE_HEADER = 0;
+    // view type for transaction item
     private static final int TYPE_ITEM   = 1;
 
     public interface OnItemClickListener {
@@ -44,6 +46,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         editListener = l;
     }
 
+    // populate list with date headers and transactions
     public void setTransactions(List<Transaction> list) {
         items.clear();
         if (list != null && !list.isEmpty()) {
@@ -52,7 +55,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             for (Transaction t : list) {
                 String day = df.format(t.getDate());
                 if (!day.equals(lastDate)) {
-                    items.add(day);   // header row
+                    items.add(day);
                     lastDate = day;
                 }
                 items.add(t);
@@ -75,14 +78,15 @@ public class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return null;
     }
 
-
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inf = LayoutInflater.from(parent.getContext());
         if (viewType == TYPE_HEADER) {
+            // inflate the date header layout
             View v = inf.inflate(R.layout.item_date_header, parent, false);
             return new DateHeaderHolder(v);
         } else {
+            // inflate the transaction item layout
             View v = inf.inflate(R.layout.item_transaction, parent, false);
             return new TransactionHolder(v);
         }
@@ -125,10 +129,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             btnEdit    = v.findViewById(R.id.btnEdit);
         }
 
+        // bind transaction data to views
         void bind(Transaction t,
                   OnItemClickListener clickListener,
                   OnEditClickListener editListener) {
-            // icon
+            // choose icon based on category
             int iconRes;
             switch (t.getCategory().toLowerCase(Locale.ROOT)) {
                 case "food":   iconRes = R.drawable.ic_food;   break;
@@ -138,26 +143,24 @@ public class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             ivIcon.setImageResource(iconRes);
 
-            // date
+            // format and display date
             String dateText = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
                     .format(t.getDate());
             tvDate.setText(dateText);
 
-            // category & amount
+            // display category and amount with currency symbol
             tvCategory.setText(t.getCategory());
             boolean isIncome = "income".equalsIgnoreCase(t.getType());
-            String sign = isIncome ? "+" : "-";
             CurrencyManager cm = CurrencyManager.get(itemView.getContext());
-            String disp = sign
+            String disp = (isIncome ? "+" : "")
                     + cm.getCurrencySymbol()
                     + String.format(Locale.getDefault(), "%.2f", Math.abs(t.getAmount()));
             tvAmount.setText(disp);
-            int color = isIncome
-                    ? R.color.incomeColor
-                    : R.color.expenseColor;
-            tvAmount.setTextColor(ContextCompat.getColor(itemView.getContext(), color));
+            tvAmount.setTextColor(ContextCompat.getColor(
+                    itemView.getContext(),
+                    isIncome ? R.color.incomeColor : R.color.expenseColor));
 
-            // clicks
+            // set click actions for item and edit button
             itemView.setOnClickListener(v -> {
                 if (clickListener != null) clickListener.onItemClick(t);
             });
