@@ -41,11 +41,13 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
+        // inflate view binding for settings fragment
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
 
+        // get currency manager instance
         cm = CurrencyManager.get(requireContext());
 
-        // 1) Create & set an initially-empty adapter on the spinner
+        // setup spinner adapter with empty data
         adapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -54,10 +56,10 @@ public class SettingsFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spCurrency.setAdapter(adapter);
 
-        // Prepare a map to hold code → symbol mappings
+        // prepare map for currency code to symbol
         Map<String, String> currencySymbols = new HashMap<>();
 
-        // 2) Fetch currency codes via RestCountriesApi
+        // fetch currency data from rest api
         RestCountriesApi api = NetworkClient.getRetrofit()
                 .create(RestCountriesApi.class);
         api.getCurrencies().enqueue(new Callback<List<CountryCurrencyResponse>>() {
@@ -73,7 +75,7 @@ public class SettingsFragment extends Fragment {
                     return;
                 }
 
-                // Extract unique currency codes & fill symbol map
+                // extract unique currency codes and symbols
                 Set<String> codesSet = new HashSet<>();
                 for (CountryCurrencyResponse country : response.body()) {
                     if (country.currencies == null) continue;
@@ -87,14 +89,14 @@ public class SettingsFragment extends Fragment {
                     }
                 }
 
-                // Sort and push into spinner adapter
+                // update spinner with sorted currency codes
                 List<String> sorted = new ArrayList<>(codesSet);
                 java.util.Collections.sort(sorted);
                 adapter.clear();
                 adapter.addAll(sorted);
                 adapter.notifyDataSetChanged();
 
-                // Restore saved selection
+                // restore previously selected currency
                 int savedPos = adapter.getPosition(cm.getCurrencyCode());
                 if (savedPos >= 0) {
                     binding.spCurrency.setSelection(savedPos);
@@ -110,7 +112,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        // 3) When user picks a new currency, save both code and symbol
+        // handle currency selection by user
         binding.spCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override public void onNothingSelected(AdapterView<?> parent) { }
             @Override public void onItemSelected(AdapterView<?> parent,
@@ -126,7 +128,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        // Contact Us opens email app
+        // open email app for contact us
         binding.btnContactUs.setOnClickListener(v -> {
             Intent email = new Intent(Intent.ACTION_SENDTO);
             email.setData(Uri.parse("mailto:"));
@@ -135,7 +137,7 @@ public class SettingsFragment extends Fragment {
             startActivity(Intent.createChooser(email, "Send feedback"));
         });
 
-        // App version dialog
+        // show app version dialog
         binding.btnAppVersion.setOnClickListener(v ->
                 new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("App Version")

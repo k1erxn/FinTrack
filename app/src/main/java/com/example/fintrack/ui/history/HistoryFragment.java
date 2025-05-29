@@ -56,58 +56,52 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
+        // fragment for displaying transaction history
         View root = inflater.inflate(R.layout.fragment_history, container, false);
 
-        // stats button
+        // button to view statistics
         MaterialCardView btnStats = root.findViewById(R.id.cardStats);
         btnStats.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_navigation_history_to_statisticsFragment)
         );
 
-        // export CSV button
+        // button to export transactions as csv
         ImageButton btnExportCsv = root.findViewById(R.id.btnExportCsv);
         btnExportCsv.setOnClickListener(v -> exportCsv());
 
-        // export PDF button
+        // button to export transactions as pdf
         ImageButton btnExportPdf = root.findViewById(R.id.btnExportPdf);
         btnExportPdf.setOnClickListener(v -> exportPdf());
 
+        // setup sort by date toggle
         ImageButton btnFilterDate = root.findViewById(R.id.btnFilterDate);
-
         btnFilterDate.setOnClickListener(v -> {
             dateAscending = !dateAscending;
             viewModel.sortByDate(dateAscending);
         });
 
+        // setup sort by amount toggle
         ImageButton btnFilterType = root.findViewById(R.id.btnFilterType);
         btnFilterType.setOnClickListener(v -> {
             amountAscending = !amountAscending;
             viewModel.sortByAmount(amountAscending);
         });
 
-        // transactions list setup
+        // transactions list and adapter setup
         RecyclerView rv = root.findViewById(R.id.rvTransactions);
         rv.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new TransactionAdapter();
         rv.setAdapter(adapter);
 
-        // viewmodel and data observe
+        // initialize view model and observe data
         viewModel = new ViewModelProvider(this)
                 .get(TransactionViewModel.class);
         viewModel.getAllTransactions().observe(getViewLifecycleOwner(), list ->
                 adapter.setTransactions(list)
         );
 
-        // edit on click
-        adapter.setOnEditClickListener(tx -> {
-            Bundle args = new Bundle();
-            args.putInt("transactionId", tx.getId());
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_historyFragment_to_editTransactionFragment, args);
-        });
-
-        // swipe to delete
+        // swipe to delete transaction
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                 0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT
@@ -125,7 +119,6 @@ public class HistoryFragment extends Fragment {
                 if (tx != null) {
                     viewModel.delete(tx);
                 } else {
-                    // it was a date‐header, so just reset that row
                     adapter.notifyItemChanged(pos);
                 }
             }
@@ -135,6 +128,7 @@ public class HistoryFragment extends Fragment {
     }
 
     private void exportCsv() {
+        // export transactions list to csv file
         List<Transaction> list = viewModel.getAllTransactions().getValue();
         if (list == null || list.isEmpty()) {
             Toast.makeText(requireContext(), "no transactions to export",
@@ -184,6 +178,7 @@ public class HistoryFragment extends Fragment {
     }
 
     private void exportPdf() {
+        // export transactions list to pdf file
         List<Transaction> list = viewModel.getAllTransactions().getValue();
         if (list == null || list.isEmpty()) {
             Toast.makeText(requireContext(), "no transactions to export",

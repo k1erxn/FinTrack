@@ -33,11 +33,13 @@ public class AddTransactionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentAddTransactionBinding.inflate(inflater, container, false);
+        // initialize view model for transactions
         viewModel = new ViewModelProvider(this)
                 .get(TransactionViewModel.class);
 
-        // category spinner
+        binding = FragmentAddTransactionBinding.inflate(inflater, container, false);
+
+        // category spinner setup
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -46,7 +48,7 @@ public class AddTransactionFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spCategory.setAdapter(adapter);
 
-        // date picker
+        // date picker setup
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder
                 .<Long>datePicker()
                 .setSelection(selectedDate)
@@ -59,14 +61,14 @@ public class AddTransactionFragment extends Fragment {
             binding.btnPickDate.setText(datePicker.getHeaderText());
         });
 
-        // attach photo
+        // attach photo intent
         binding.btnAttachPhoto.setOnClickListener(v -> {
             Intent pick = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             pick.setType("image/*");
             startActivityForResult(pick, REQ_ATTACH_PHOTO);
         });
 
-        // save transaction
+        // save transaction logic
         binding.btnSave.setOnClickListener(v -> {
             String amtText = binding.etAmount.getText().toString().trim();
             if (amtText.isEmpty() || Double.parseDouble(amtText) <= 0) {
@@ -74,11 +76,6 @@ public class AddTransactionFragment extends Fragment {
                 return;
             }
             binding.tilAmount.setError(null);
-
-            String desc = binding.etDescription
-                    .getText()
-                    .toString()
-                    .trim();
 
             double amount = Double.parseDouble(amtText);
             String category = (String) binding.spCategory.getSelectedItem();
@@ -91,10 +88,10 @@ public class AddTransactionFragment extends Fragment {
                     selectedDate,
                     category,
                     type,
-                    desc
+                    binding.etDescription.getText().toString().trim()
             );
 
-            // if a photo was attached save its URI string
+            // include photo uri if attached
             if (attachedPhotoUri != null) {
                 tx.setPhotoUri(attachedPhotoUri.toString());
             }
@@ -109,13 +106,13 @@ public class AddTransactionFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // handle photo selection result
         if (requestCode == REQ_ATTACH_PHOTO
                 && resultCode == Activity.RESULT_OK
                 && data != null) {
             Uri uri = data.getData();
             if (uri != null) {
                 attachedPhotoUri = uri;
-                // show preview of photo
                 binding.ivPhotoPreview.setImageURI(uri);
                 binding.ivPhotoPreview.setVisibility(View.VISIBLE);
             }

@@ -1,14 +1,17 @@
-// com/example/fintrack/network/CountryCurrencyResponse.java
 package com.example.fintrack.network;
 
 import java.util.Map;
 
+// response object for currency data
 public class CountryCurrencyResponse {
-    // matches the JSON structure at restcountries.com/v3.1/all
+    // map currency code to currency info
     public Map<String, CurrencyInfo> currencies;
 
+    // holds name and symbol for currency
     public static class CurrencyInfo {
+        // currency full name
         public String name;
+        // currency symbol sign
         public String symbol;
     }
 }

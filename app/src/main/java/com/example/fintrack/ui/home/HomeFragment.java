@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+// fragment for home overview
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private TransactionViewModel viewModel;
@@ -42,26 +43,27 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
+        // inflate view binding
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Navigate to Add Transaction
+        // navigate to add transaction screen
         binding.fabAdd.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_navigation_home_to_addTransactionFragment)
         );
 
-        // Show the real current month label
+        // display current month label
         String[] shortMonths = new DateFormatSymbols(Locale.getDefault()).getShortMonths();
         String currentMonth = shortMonths[Calendar.getInstance().get(Calendar.MONTH)];
         binding.tvCurrentMonth.setText(currentMonth);
 
-        // Show today's date as the "title"
-        String today = new SimpleDateFormat("MMMM d, yyyy", Locale.getDefault())
+        // show todays date as title
+        String today = new SimpleDateFormat("MMMM d yyyy", Locale.getDefault())
                 .format(new Date());
         binding.tvOverviewTitle.setText(today);
 
-        // Prepare breakdown-spinner
+        // setup breakdown month spinner
         String[] fullMonths = new DateFormatSymbols(Locale.getDefault()).getMonths();
         List<String> breakdownMonths = new ArrayList<>();
         for (int i = 0; i < 12; i++) breakdownMonths.add(fullMonths[i]);
@@ -76,18 +78,20 @@ public class HomeFragment extends Fragment {
         binding.spinnerSummary.setOnItemSelectedListener(new SimpleItemSelectedListener() {
             @Override
             public void onItemSelected(int position) {
+                // update dashboard pie based on spinner selection
                 updateDashboard(viewModel.getAllTransactions().getValue());
             }
         });
 
+        // initialize view model and observe transaction data
         viewModel = new ViewModelProvider(this).get(TransactionViewModel.class);
         viewModel.getAllTransactions().observe(getViewLifecycleOwner(), list -> {
             if (list == null) return;
 
-            // ALWAYS recalc top‐level overview for currentMonth
+            // recalc overview section for current month
             initializeOverview(list, currentMonth);
 
-            // THEN rebuild both pies
+            // rebuild main and mini pie charts
             updateDashboard(list);
             updateMiniPie(list);
         });
@@ -95,9 +99,13 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    /**
-     * Recalculates and displays the Income/Expenses summary for the real current month.
-     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null; // prevent memory leak
+    }
+
+    // calculate and display income and expenses overview
     private void initializeOverview(List<Transaction> allTx, String targetMonth) {
         double inc = 0, exp = 0;
         SimpleDateFormat fmt = new SimpleDateFormat("MMM", Locale.getDefault());
@@ -108,20 +116,12 @@ public class HomeFragment extends Fragment {
             if ("income".equalsIgnoreCase(t.getType())) inc += t.getAmount();
             else exp += t.getAmount();
         }
-        // in initializeOverview(...)
         CurrencyManager cm = CurrencyManager.get(requireContext());
-        binding.tvIncomeOverView.setText(String.format(
-                "Income\n%s%.2f",
-                cm.getCurrencySymbol(), inc));
-        binding.tvExpensesOverview.setText(String.format(
-                "Expenses\n%s%.2f",
-                cm.getCurrencySymbol(), exp));
-
+        binding.tvIncomeOverView.setText(String.format("Income\n%s%.2f", cm.getCurrencySymbol(), inc));
+        binding.tvExpensesOverview.setText(String.format("Expenses\n%s%.2f", cm.getCurrencySymbol(), exp));
     }
 
-    /**
-     * Rebuilds the breakdown pie-chart for the spinner’s selected month.
-     */
+    // rebuild breakdown pie chart for selected month
     private void updateDashboard(List<Transaction> allTx) {
         if (allTx == null) return;
 
@@ -142,6 +142,7 @@ public class HomeFragment extends Fragment {
             }
         }
 
+        // prepare pie entries for categories
         List<PieEntry> entries = new ArrayList<>();
         for (Map.Entry<String, Float> e : sums.entrySet()) {
             entries.add(new PieEntry(e.getValue(), e.getKey()));
@@ -173,9 +174,7 @@ public class HomeFragment extends Fragment {
         pie.invalidate();
     }
 
-    /**
-     * Builds the mini pie chart of current-month income vs. expenses.
-     */
+    // build mini pie for income vs expenses for current month
     private void updateMiniPie(List<Transaction> allTx) {
         if (allTx == null) return;
 
@@ -193,6 +192,7 @@ public class HomeFragment extends Fragment {
             else totalOut += amt;
         }
 
+        // prepare entries for mini pie
         List<PieEntry> entries = new ArrayList<>();
         if (totalIn > 0)  entries.add(new PieEntry(totalIn, ""));
         if (totalOut > 0) entries.add(new PieEntry(totalOut, ""));
@@ -207,11 +207,5 @@ public class HomeFragment extends Fragment {
         miniPie.getLegend().setEnabled(false);
         miniPie.setData(new PieData(ds));
         miniPie.invalidate();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

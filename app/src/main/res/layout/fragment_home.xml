@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.home.HomeFragment">
 
-    <!-- Scrollable content -->
+    <!-- scrollable content container -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollContent"
         android:layout_width="0dp"
@@ -24,7 +24,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp">
 
-            <!-- 1. Top Overview Card -->
+            <!-- top overview card showing date month and summary -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardTopSection"
                 android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp">
 
-                    <!-- Today's date in title -->
+                    <!-- title showing todays date -->
                     <TextView
                         android:id="@+id/tvOverviewTitle"
                         android:layout_width="0dp"
@@ -52,7 +52,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
-                    <!-- Current Month bar -->
+                    <!-- container showing current month -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/currentMonthContainer"
                         android:layout_width="0dp"
@@ -75,7 +75,7 @@
                             android:textColor="@android:color/white" />
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Income & Expenses -->
+                    <!-- cards for income and expenses overview -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cardIncome"
                         android:layout_width="0dp"
@@ -130,7 +130,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 2. Mini Pie Chart: This Month -->
+            <!-- mini pie chart for current month breakdown -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardCurrentMonthPie"
                 android:layout_width="match_parent"
@@ -164,7 +164,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 3. Expense Breakdown Card (original size) -->
+            <!-- expense breakdown section with spinner and pie chart -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardPieSection"
                 android:layout_width="match_parent"
@@ -182,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Breakdown Title Bar -->
+                    <!-- title bar for expense breakdown -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/breakdownTitleBar"
                         android:layout_width="match_parent"
@@ -202,7 +202,7 @@
                             android:textColor="@android:color/white" />
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Spinner -->
+                    <!-- month selection spinner -->
                     <Spinner
                         android:id="@+id/spinnerSummary"
                         android:layout_width="match_parent"
@@ -212,7 +212,7 @@
                         android:padding="12dp"
                         android:popupBackground="?android:attr/colorBackgroundFloating" />
 
-                    <!-- Main PieChart -->
+                    <!-- main pie chart view -->
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/pieChart"
                         android:layout_width="match_parent"
@@ -223,7 +223,7 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- 4. Fixed FAB -->
+    <!-- floating action button to add transaction -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAdd"
         android:layout_width="wrap_content"

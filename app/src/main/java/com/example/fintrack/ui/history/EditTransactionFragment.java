@@ -31,19 +31,19 @@ public class EditTransactionFragment extends Fragment {
     private final SimpleDateFormat sdf =
             new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
-    // <— hold onto the loaded transaction so we never dereference a null LiveData value
     private Transaction currentTx;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
+        // initialize view binding and view model
         binding = FragmentEditTransactionBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(this).get(TransactionViewModel.class);
 
         txId = getArguments().getInt("transactionId");
 
-        // category spinner
+        // setup category dropdown
         ArrayAdapter<String> catAdapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -52,7 +52,7 @@ public class EditTransactionFragment extends Fragment {
         catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spCategory.setAdapter(catAdapter);
 
-        // date picker
+        // setup date picker button
         MaterialDatePicker<Long> picker = MaterialDatePicker.Builder
                 .<Long>datePicker()
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
@@ -65,13 +65,12 @@ public class EditTransactionFragment extends Fragment {
             binding.btnPickDate.setText(sdf.format(selectedDate));
         });
 
-        // load transaction and prefill form
+        // load and display existing transaction data
         viewModel.getTransactionById(txId)
                 .observe(getViewLifecycleOwner(), tx -> {
                     if (tx == null) return;
-                    currentTx = tx;  // ← store it immediately
+                    currentTx = tx;
 
-                    // populate fields
                     binding.etAmount.setText(String.valueOf(tx.getAmount()));
                     selectedDate = tx.getDate();
                     binding.btnPickDate.setText(sdf.format(selectedDate));
@@ -79,7 +78,6 @@ public class EditTransactionFragment extends Fragment {
                     int pos = catAdapter.getPosition(tx.getCategory());
                     if (pos >= 0) binding.spCategory.setSelection(pos);
 
-                    // photo preview
                     String photoUri = tx.getPhotoUri();
                     if (!TextUtils.isEmpty(photoUri)) {
                         binding.ivPhotoPreview.setVisibility(View.VISIBLE);
@@ -90,14 +88,13 @@ public class EditTransactionFragment extends Fragment {
                     }
                 });
 
-        // update button
+        // handle update action
         binding.btnUpdate.setOnClickListener(v -> {
             String amtText = binding.etAmount.getText().toString().trim();
             double amt = Double.parseDouble(amtText);
             String cat = (String) binding.spCategory.getSelectedItem();
             String desc = binding.etDescription.getText().toString().trim();
 
-            // build new transaction, preserving ID and photoUri
             Transaction updated = new Transaction(
                     amt,
                     selectedDate,
@@ -107,7 +104,6 @@ public class EditTransactionFragment extends Fragment {
             );
             updated.setId(txId);
 
-            // safely reuse whatever photoUri was loaded (if any)
             if (currentTx != null && currentTx.getPhotoUri() != null) {
                 updated.setPhotoUri(currentTx.getPhotoUri());
             }
@@ -116,7 +112,7 @@ public class EditTransactionFragment extends Fragment {
             NavHostFragment.findNavController(this).popBackStack();
         });
 
-        // delete button
+        // handle delete action
         binding.btnDelete.setOnClickListener(v ->
                 viewModel.getTransactionById(txId).observe(getViewLifecycleOwner(), tx -> {
                     if (tx != null) viewModel.delete(tx);
