@@ -108,12 +108,15 @@ public class HomeFragment extends Fragment {
             if ("income".equalsIgnoreCase(t.getType())) inc += t.getAmount();
             else exp += t.getAmount();
         }
+        // in initializeOverview(...)
         CurrencyManager cm = CurrencyManager.get(requireContext());
-        String symbol = cm.getCurrencySymbol();
         binding.tvIncomeOverView.setText(String.format(
-                "Income\n%s%.2f", symbol, inc));
+                "Income\n%s%.2f",
+                cm.getCurrencySymbol(), inc));
         binding.tvExpensesOverview.setText(String.format(
-                "Expenses\n%s%.2f", symbol, exp));
+                "Expenses\n%s%.2f",
+                cm.getCurrencySymbol(), exp));
+
     }
 
     /**
